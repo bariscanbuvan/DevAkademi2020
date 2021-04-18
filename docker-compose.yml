@@ -1,0 +1,33 @@
+version: "3"
+services:
+    server:
+        container_name: devakademi-server
+        build:
+            context: ./server
+        depends_on:
+            - devakademi-db
+            - redis
+        env_file:
+            - ./server/.env
+        ports:
+            - "8000:8000"
+    client:
+        container_name: devakademi-client
+        build:
+            context: ./client
+        ports:
+            - "8080:8080"
+        env_file:
+            - ./client/.env
+    devakademi-db:
+        container_name: devakademi-db
+        image: mongo:4.0
+        restart: always
+        ports:
+            - "27017:27017"
+    redis:
+      container_name: devakademi-redis
+      image: redis
+      restart: always
+      ports:
+        - '6379:6379'
